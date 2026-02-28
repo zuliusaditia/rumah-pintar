@@ -2,18 +2,24 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once "logger.php";
 require_once "session_config.php";
-
-// JANGAN include koneksi lagi kalau sudah ada di session_config
-// include "../koneksi.php";
+include "../koneksi.php";
 
 if (isset($_SESSION['admin'])) {
     header("Location: dashboard.php");
     exit;
 }
 
+$error = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (
+        !isset($_POST['csrf_token']) ||
+        !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])
+    ) {
+        die("CSRF tidak valid.");
+    }
 
     $username = trim($_POST['username']);
     $password = $_POST['password'];
@@ -27,57 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $admin = $result->fetch_assoc();
 
-        // ==========================
-        // CEK RATE LIMIT
-        // ==========================
-        if ($admin['login_attempts'] >= 5) {
+        if (password_verify($password, $admin['password'])) {
 
-            $last_attempt = strtotime($admin['last_attempt']);
-            $now = time();
-            $diff = $now - $last_attempt;
+            session_regenerate_id(true);
+            $_SESSION['admin'] = $admin['username'];
 
-            if ($diff < 600) { // 10 menit
-                $remaining = ceil((600 - $diff) / 60);
-                $error = "Terlalu banyak percobaan login. Coba lagi dalam $remaining menit.";
-            } else {
-                // Reset setelah 10 menit
-                $reset = $conn->prepare("UPDATE admins SET login_attempts=0 WHERE id=?");
-                $reset->bind_param("i", $admin['id']);
-                $reset->execute();
-                $admin['login_attempts'] = 0;
-            }
-        }
+            header("Location: dashboard.php");
+            exit;
 
-        if (!isset($error)) {
-
-            if (password_verify($password, $admin['password'])) {
-
-                // LOGIN BERHASIL → RESET ATTEMPTS
-                $reset = $conn->prepare("UPDATE admins SET login_attempts=0 WHERE id=?");
-                $reset->bind_param("i", $admin['id']);
-                $reset->execute();
-
-                session_regenerate_id(true);
-                $_SESSION['admin'] = $admin['username'];
-
-                log_activity($conn, $admin['username'], "Login berhasil");
-                header("Location: dashboard.php");
-                exit;
-
-            } else {
-
-                // PASSWORD SALAH → TAMBAH ATTEMPT
-                $update = $conn->prepare(
-                    "UPDATE admins 
-                    SET login_attempts = login_attempts + 1, 
-                        last_attempt = NOW() 
-                    WHERE id=?"
-                );
-                $update->bind_param("i", $admin['id']);
-                $update->execute();
-
-                $error = "Password salah.";
-            }
+        } else {
+            $error = "Password salah.";
         }
 
     } else {
@@ -88,18 +53,125 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<h2>Login Admin</h2>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login Admin - Rumah Pintar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<?php if (isset($error)) : ?>
-    <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    height:100vh;
+    background: rgb(63, 127, 212);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.login-card {
+    width:100%;
+    max-width:420px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.logo-title {
+    font-weight:700;
+    font-size:22px;
+}
+
+.form-control {
+    border-radius:12px;
+    padding:12px;
+}
+
+.btn-login {
+    background:rgb(63, 127, 212);
+    border:none;
+    border-radius:12px;
+    padding:12px;
+    font-weight:600;
+}
+
+.btn-login:hover {
+    background:#e85c2c;
+}
+
+.password-toggle {
+    cursor:pointer;
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:#888;
+}
+</style>
+
+</head>
+<body>
+
+<div class="login-card">
+
+<div class="text-center mb-4">
+    <div class="logo-title">Rumah Pintar</div>
+    <small class="text-muted">Admin Panel</small>
+</div>
+
+<?php if ($error): ?>
+<div class="alert alert-danger text-center">
+<?= htmlspecialchars($error) ?>
+</div>
 <?php endif; ?>
 
 <form method="POST">
-    Username:<br>
-    <input type="text" name="username" required><br><br>
 
-    Password:<br>
-    <input type="password" name="password" required><br><br>
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
-    <button type="submit">Login</button>
+<div class="mb-3">
+<label class="form-label">Username</label>
+<input type="text" name="username" class="form-control" required>
+</div>
+
+<div class="mb-3 position-relative">
+<label class="form-label">Password</label>
+<input type="password" name="password" id="password" class="form-control" required>
+<span class="password-toggle" onclick="togglePassword()">Show</span>
+</div>
+
+<button type="submit" class="btn btn-login w-100">
+Login
+</button>
+
 </form>
+
+<div class="text-center mt-4">
+<small class="text-muted">© <?= date('Y') ?> Rumah Pintar</small>
+</div>
+
+</div>
+
+<script>
+function togglePassword() {
+    const input = document.getElementById("password");
+    const toggle = document.querySelector(".password-toggle");
+
+    if (input.type === "password") {
+        input.type = "text";
+        toggle.innerText = "Hide";
+    } else {
+        input.type = "password";
+        toggle.innerText = "Show";
+    }
+}
+</script>
+
+</body>
+</html>

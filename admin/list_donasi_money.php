@@ -13,11 +13,10 @@ include "partials/header.php";
 ?>
 
 <div class="container-fluid">
-<div class="row">
 
 <?php include "partials/sidebar.php"; ?>
 
-<div class="col-md-9 col-lg-10 p-4">
+<div class="content-area">
 
 <h4 class="mb-4">Donasi Uang</h4>
 
@@ -70,7 +69,6 @@ class="btn btn-sm btn-secondary">
 </table>
 </div>
 
-</div>
 </div>
 </div>
 </div>

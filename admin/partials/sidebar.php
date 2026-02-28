@@ -6,10 +6,10 @@ $pending_volunteer = mysqli_fetch_assoc(
 )['total'];
 ?>
 
-<div class="col-md-3 col-lg-2 p-0 sidebar">
+<div class="sidebar-fixed">
 
-<div class="p-3 text-center border-bottom">
-    <h5>Rumah Pintar</h5>
+<div class="p-3 text-center border-bottom border-secondary">
+    <h5 class="text-white">Rumah Pintar</h5>
 </div>
 
 <a href="dashboard.php" class="<?= $current=='dashboard.php'?'active':'' ?>">

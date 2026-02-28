@@ -13,11 +13,10 @@ include "partials/header.php";
 ?>
 
 <div class="container-fluid">
-<div class="row">
 
 <?php include "partials/sidebar.php"; ?>
 
-<div class="col-md-9 col-lg-10 p-4">
+<div class="content-area">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4>Daftar Impact</h4>
@@ -49,9 +48,18 @@ include "partials/header.php";
     <td><?= htmlspecialchars($row['value']); ?></td>
     <td><?= htmlspecialchars($row['label']); ?></td>
     <td>
-        <a href="edit_impact.php?id=<?= $row['id']; ?>">Edit</a> |
-        <a href="hapus_impact.php?id=<?= $row['id']; ?>" onclick="return confirm('Yakin hapus?')">Hapus</a>
+        <a href="edit_impact.php?id=<?= $row['id'] ?>"
+        class="btn btn-sm btn-primary">
+        <i class="bi bi-pencil"></i>
+        </a>
+
+        <a href="hapus_impact.php?id=<?= $row['id'] ?>"
+        class="btn btn-sm btn-danger"
+        onclick="return confirm('Yakin hapus impact?')">
+        <i class="bi bi-trash"></i>
+        </a>
     </td>
+    
 </tr>
 <?php } ?>
 

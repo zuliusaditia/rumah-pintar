@@ -36,16 +36,16 @@ include "partials/header.php";
 ?>
 
 <div class="container-fluid">
-<div class="row">
+
 <?php include "partials/sidebar.php"; ?>
 
-<div class="col-md-9 col-lg-10 p-4">
+<div class="content-area">
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4>Daftar Artikel</h4>
-    <a href="tambah_artikel.php" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Tambah Artikel
-    </a>
+   <h4>Daftar Artikel</h4>
+   <a href="tambah_artikel.php" class="btn btn-primary">
+      <i class="bi bi-plus-lg"></i> Tambah Artikel
+   </a>
 </div>
 
 <!-- SEARCH -->
@@ -158,7 +158,6 @@ include "partials/header.php";
 </ul>
 </nav>
 
-</div>
 </div>
 </div>
 
