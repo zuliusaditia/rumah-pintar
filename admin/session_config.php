@@ -39,3 +39,7 @@ require_once __DIR__ . "/../koneksi.php";
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
+// =======================
+// END OF SESSION CONFIG
+// =======================
+ini_set('session.cookie_samesite', 'Strict');

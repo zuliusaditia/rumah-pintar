@@ -78,17 +78,17 @@ if ($status === 'approved') {
             // KONFIG SMTP
             // ======================
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = MAIL_HOST;
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'zuliusaditia01@gmail.com'; // GANTI
-            $mail->Password   = 'lyhsvzgsnfwfacxz'; // GANTI (tanpa spasi)
+            $mail->Username   = MAIL_USER; // GANTI
+            $mail->Password   = MAIL_PASS; // GANTI (tanpa spasi)
             $mail->SMTPSecure = 'tls';
-            $mail->Port       = 587;
+            $mail->Port       = MAIL_PORT;
 
             // ======================
             // EMAIL CONTENT
             // ======================
-            $mail->setFrom('zuliusaditia01@gmail.com', 'Rumah Pintar');
+            $mail->setFrom(MAIL_USER, 'Rumah Pintar');
             $mail->addAddress($vol['email'], $vol['nama']);
 
             $mail->isHTML(true);
