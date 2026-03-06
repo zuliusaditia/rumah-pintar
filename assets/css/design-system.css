@@ -144,3 +144,44 @@ body {
     background: var(--secondary);
     border-radius: 10px;
 }
+
+/* =========================
+   DONASI SWITCHER
+========================= */
+
+.section-soft{
+padding:60px 0;
+}
+
+.donasi-switcher{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:-20px;
+margin-bottom:40px;
+}
+
+.switch-btn{
+padding:12px 28px;
+border:none;
+border-radius:10px;
+font-weight:600;
+background:#e5e5e5;
+transition:all .2s;
+}
+
+.switch-btn.active{
+background:#2F4B8F;
+color:white;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.card-custom{
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+padding:35px;
+}

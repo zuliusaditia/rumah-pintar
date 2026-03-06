@@ -47,6 +47,10 @@ $pending_volunteer = mysqli_fetch_assoc(
     <i class="bi bi-receipt"></i> Orders
 </a>
 
+<a href="settings.php" class="<?= $current=='settings.php'?'active':'' ?>">
+    <i class="bi bi-gear"></i> Settings
+</a>
+
 <a href="logout.php" class="text-danger">
     <i class="bi bi-box-arrow-right"></i> Logout
 </a>

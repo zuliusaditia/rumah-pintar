@@ -9,7 +9,7 @@ include "header_shop.php";
 if (empty($_SESSION['cart'])) {
     echo "<div class='container mt-5'>
             <div class='alert alert-info'>Keranjang kosong.</div>
-          </div>";
+        </div>";
     exit;
 }
 

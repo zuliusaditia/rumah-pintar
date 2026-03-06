@@ -127,3 +127,12 @@ body {
     text-transform: uppercase;
     color: #6b7280;
 }
+
+/* BUTTON */
+.btn-success {
+    border-radius:8px;
+}
+
+.btn-danger {
+    border-radius:8px;
+}
