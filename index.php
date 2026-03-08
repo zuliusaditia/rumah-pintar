@@ -1,14 +1,23 @@
 <?php
 include "koneksi.php";
 include "includes/header.php";
+include "includes/hero.php";
 
 // Ambil 3 artikel terbaru
 $query = "SELECT * FROM articles WHERE status='publish' ORDER BY id DESC LIMIT 3";
 $result = mysqli_query($conn, $query);
+
+$hero_query = mysqli_query($conn,"
+SELECT * FROM hero_slides
+WHERE status='aktif'
+ORDER BY sort_order ASC
+");
+
 ?>
 
+
 <!-- HERO SECTION -->
-<section class="hero d-flex align-items-center" style="background: linear-gradient(rgba(31,60,136,0.7), rgba(31,60,136,0.7)), url('assets/img/hero.jpeg'); background-size: cover; background-position: center; min-height: 90vh; color: white;">
+<!-- <section class="hero d-flex align-items-center" style="background: linear-gradient(rgba(31,60,136,0.7), rgba(31,60,136,0.7)), url('assets/img/hero.jpeg'); background-size: cover; background-position: center; min-height: 90vh; color: white;">
     <div class="container text-center">
         <h1 class="fw-bold" style="font-size: 48px;">
             Membangun Masa Depan Anak Bersama Rumah Pintar
@@ -27,7 +36,7 @@ $result = mysqli_query($conn, $query);
         </div>
     </div>
 </section>
-<br>
+<br> -->
 
 <!-- IMPACT NUMBERS -->
 <section class="section text-center">
@@ -73,15 +82,39 @@ $result = mysqli_query($conn, $query);
     </div>
 </section>
 
-<!-- TENTANG SINGKAT -->
-<section class="section bg-light">
-    <div class="container text-center" style="color:#1F3C88;">
-        <h2>Tentang Kami</h2>
-        <p>
-        Rumah Pintar adalah sekolah sukarela yang berdiri untuk membantu anak-anak di sekitar mendapatkan pendidikan tambahan,
-        pendampingan belajar, serta pembinaan karakter.
-        </p>
-    </div>
+<!-- ABOUT -->
+<section class="section section-soft">
+
+<div class="container">
+
+<div class="row align-items-center">
+
+<div class="col-md-6">
+
+<h2 class="fw-bold">
+Tentang Rumah Pintar
+</h2>
+
+<p class="text-muted">
+Rumah Pintar adalah sekolah sukarela yang berdiri untuk membantu anak-anak di sekitar mendapatkan pendidikan tambahan, pendampingan belajar, serta pembinaan karakter.
+</p>
+
+<a href="tentang.php" class="btn btn-outline-custom mt-3">
+Pelajari Lebih Lanjut
+</a>
+
+</div>
+
+<div class="col-md-6 text-center">
+
+<img src="assets/img/about.jpg" class="img-fluid rounded shadow">
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
 <br>

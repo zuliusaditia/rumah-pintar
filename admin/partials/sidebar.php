@@ -20,6 +20,10 @@ $pending_volunteer = mysqli_fetch_assoc(
     <i class="bi bi-file-earmark-text"></i> Artikel
 </a>
 
+<a href="hero.php" class="<?= $current=='hero.php'?'active':'' ?>">
+    <i class="bi bi-image"></i> Hero Slider
+</a>
+
 <a href="kelola_impact.php" class="<?= $current=='kelola_impact.php'?'active':'' ?>">
     <i class="bi bi-bar-chart"></i> Impact
 </a>

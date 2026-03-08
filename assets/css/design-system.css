@@ -1,157 +1,246 @@
 /* =========================
-   ROOT VARIABLES
+ROOT VARIABLES
 ========================= */
 
-:root {
-    --primary: #1F3C88;
-    --secondary: #F97316;
-    --success: #22C55E;
-    --text-main: #1F2937;
-    --text-muted: #6B7280;
-    --bg-soft: #F8FAFC;
+:root{
+--primary:#1F3C88;
+--secondary:#F97316;
+--success:#22C55E;
+--text-main:#1F2937;
+--text-muted:#6B7280;
+--bg-soft:#F8FAFC;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-main);
-    background: #fff;
+body{
+font-family:'Poppins',sans-serif;
+color:var(--text-main);
+background:#fff;
 }
 
 /* =========================
-   SECTION
+SECTION
 ========================= */
 
-.section {
-    padding: 80px 0;
+.section{
+padding:80px 0;
 }
-
-.section-soft {
-    background: var(--bg-soft);
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-.btn-primary-custom {
-    background: var(--secondary);
-    border: none;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.btn-primary-custom:hover {
-    background: #ea580c;
-    color: #fff;
-}
-
-.btn-outline-custom {
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: 0.3s ease;
-}
-
-.btn-outline-custom:hover {
-    background: var(--primary);
-    color: #fff;
-}
-
-/* =========================
-   CARDS
-========================= */
-
-.card-custom {
-    border: none;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-    transition: 0.3s ease;
-}
-
-.card-custom:hover {
-    transform: translateY(-5px);
-}
-
-/* =========================
-   IMPACT NUMBERS
-========================= */
-
-.impact-number {
-    font-size: 40px;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.impact-label {
-    color: var(--text-muted);
-    font-size: 14px;
-}
-
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar-custom {
-    padding: 20px 0;
-}
-
-.navbar-custom .nav-link {
-    font-weight: 500;
-    color: var(--text-main);
-}
-
-.navbar-custom .nav-link:hover {
-    color: var(--secondary);
-}
-
-/* =========================
-   PAGINATION CUSTOM
-========================= */
-
-.pagination .page-link {
-    color: var(--primary);
-    border-radius: 6px;
-    margin: 0 4px;
-}
-
-.pagination .page-link:hover {
-    background: var(--secondary);
-    color: #fff;
-    border-color: var(--secondary);
-}
-
-.pagination .page-item.active .page-link {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-}
-
-/* =========================
-   SCROLL PRODUCTS
-========================= */
-
-.product-scroll::-webkit-scrollbar {
-    height: 6px;
-}
-
-.product-scroll::-webkit-scrollbar-thumb {
-    background: var(--secondary);
-    border-radius: 10px;
-}
-
-/* =========================
-   DONASI SWITCHER
-========================= */
 
 .section-soft{
-padding:60px 0;
+background:var(--bg-soft);
 }
+
+/* =========================
+BUTTONS
+========================= */
+
+.btn-primary-custom{
+background:var(--secondary);
+border:none;
+color:#fff;
+padding:12px 24px;
+border-radius:8px;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-primary-custom:hover{
+background:#ea580c;
+color:#fff;
+}
+
+.btn-outline-custom{
+border:2px solid var(--primary);
+color:var(--primary);
+padding:12px 24px;
+border-radius:8px;
+font-weight:600;
+transition:.3s;
+}
+
+.btn-outline-custom:hover{
+background:var(--primary);
+color:#fff;
+}
+
+/* =========================
+HERO SLIDER FIX
+========================= */
+
+/* =========================
+HERO SLIDER
+========================= */
+
+.hero-slider{
+height:90vh;
+}
+
+#heroCarousel{
+height:100%;
+}
+
+#heroCarousel .carousel-inner{
+height:100%;
+}
+
+#heroCarousel .carousel-item{
+height:100%;
+}
+
+.hero-slide{
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+background-size:cover;
+background-position:center;
+position:relative;
+color:white;
+text-align:center;
+}
+
+.hero-overlay{
+position:absolute;
+inset:0;
+background:linear-gradient(
+rgba(0,0,0,0.6),
+rgba(0,0,0,0.5)
+);
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:800px;
+}
+
+.hero-title{
+font-size:clamp(36px,5vw,56px);
+font-weight:700;
+line-height:1.2;
+}
+
+.hero-subtitle{
+font-size:clamp(16px,2vw,20px);
+margin-top:15px;
+opacity:.9;
+}
+
+/* =========================
+HERO FIX FOR BOOTSTRAP
+========================= */
+
+.carousel-item{
+height:90vh;
+}
+
+.carousel-item .hero-slide{
+height:100%;
+}
+
+.carousel,
+.carousel-inner{
+height:90vh;
+}
+
+/* =========================
+CARDS
+========================= */
+
+.card-custom{
+border:none;
+border-radius:16px;
+padding:30px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+transition:.3s;
+}
+
+.card-custom:hover{
+transform:translateY(-5px);
+}
+
+/* =========================
+IMPACT
+========================= */
+
+.impact-card{
+padding:30px;
+border-radius:14px;
+background:white;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.impact-icon{
+font-size:32px;
+color:var(--primary);
+margin-bottom:10px;
+}
+
+.impact-number{
+font-size:40px;
+font-weight:700;
+color:var(--primary);
+}
+
+.impact-label{
+color:var(--text-muted);
+font-size:14px;
+}
+
+/* =========================
+NAVBAR
+========================= */
+
+.navbar-custom{
+padding:20px 0;
+}
+
+.navbar-custom .nav-link{
+font-weight:500;
+color:var(--text-main);
+}
+
+.navbar-custom .nav-link:hover{
+color:var(--secondary);
+}
+
+/* =========================
+PRODUCT SCROLL
+========================= */
+
+.product-scroll{
+display:flex;
+gap:20px;
+overflow-x:auto;
+padding-bottom:10px;
+}
+
+.product-scroll::-webkit-scrollbar{
+height:6px;
+}
+
+.product-scroll::-webkit-scrollbar-thumb{
+background:var(--secondary);
+border-radius:10px;
+}
+
+.product-card{
+min-width:220px;
+background:white;
+border-radius:14px;
+padding:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+.product-img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:8px;
+}
+
+/* =========================
+DONASI SWITCHER
+========================= */
 
 .donasi-switcher{
 display:flex;
@@ -167,7 +256,7 @@ border:none;
 border-radius:10px;
 font-weight:600;
 background:#e5e5e5;
-transition:all .2s;
+transition:.2s;
 }
 
 .switch-btn.active{
@@ -175,13 +264,41 @@ background:#2F4B8F;
 color:white;
 }
 
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
+/* =========================
+CTA
+========================= */
+
+.cta-section{
+background:#f97316;
+color:white;
+padding:70px 0;
 }
 
-.card-custom{
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
-padding:35px;
+/* ===== HERO CAROUSEL FORCE HEIGHT ===== */
+
+.hero-slider{
+height:90vh;
+}
+
+#heroCarousel{
+height:100%;
+}
+
+#heroCarousel .carousel-inner{
+height:100%;
+}
+
+#heroCarousel .carousel-item{
+height:100%;
+}
+
+.hero-slide{
+height:100%;
+min-height:90vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background-size:cover;
+background-position:center;
+position:relative;
 }
