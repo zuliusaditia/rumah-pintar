@@ -65,10 +65,11 @@ include "partials/header.php";
 ?>
 
 <div class="container-fluid">
-<div class="row">
+
 <?php include "partials/sidebar.php"; ?>
 
-<div class="col-md-9 col-lg-10 p-4">
+<div class="content-area p-4">
+    
 
 <h4 class="mb-4">Tambah Artikel</h4>
 

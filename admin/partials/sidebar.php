@@ -35,6 +35,10 @@ $pending_volunteer = mysqli_fetch_assoc(
     <?php endif; ?>
 </a>
 
+<a href="partners.php" class="<?= $current=='partners.php'?'active':'' ?>">
+    <i class="bi bi-handshake"></i> Partner & Kolaborator
+</a>
+
 <a href="list_donasi_barang.php" class="<?= $current=='list_donasi_barang.php'?'active':'' ?>">
     <i class="bi bi-box-seam"></i> Donasi Barang
 </a>

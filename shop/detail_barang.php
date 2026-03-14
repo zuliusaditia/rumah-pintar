@@ -1,154 +1,178 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 
 include "../koneksi.php";
 include "header_shop.php";
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    echo "Produk tidak valid.";
-    exit;
-}
+$id = $_GET['id'];
 
-$id = (int) $_GET['id'];
+$query = mysqli_query($conn,"SELECT * FROM products WHERE id='$id'");
+$data = mysqli_fetch_assoc($query);
 
-$stmt = $conn->prepare("SELECT * FROM products WHERE id=? AND status='aktif'");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
+$stok = (int)$data['stok'];
 
-if ($result->num_rows === 0) {
-    echo "Produk tidak ditemukan.";
-    exit;
-}
-
-$product = $result->fetch_assoc();
-$stmt->close();
-
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [];
-}
-
-$error_message = "";
-
-// ==========================
-// HANDLE ADD TO CART
-// ==========================
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $qty = (int) $_POST['qty'];
-
-    // Cek stok realtime
-    $stmt = $conn->prepare("SELECT stok FROM products WHERE id=?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $dbProduct = $res->fetch_assoc();
-    $stmt->close();
-
-    if ($qty <= 0) {
-        $error_message = "Jumlah tidak valid.";
-    } elseif ($qty > $dbProduct['stok']) {
-        $error_message = "Stok tidak mencukupi.";
-    } else {
-
-        // Kalau produk sudah ada → tambah qty
-        if (isset($_SESSION['cart'][$id])) {
-
-            $newQty = $_SESSION['cart'][$id]['qty'] + $qty;
-
-            if ($newQty > $dbProduct['stok']) {
-                $error_message = "Total di keranjang melebihi stok.";
-            } else {
-                $_SESSION['cart'][$id]['qty'] = $newQty;
-            }
-
-        } else {
-            // Tambah produk baru
-            $_SESSION['cart'][$id] = [
-                'id' => $product['id'],
-                'nama' => $product['nama'],
-                'harga' => $product['harga'],
-                'qty' => $qty
-            ];
-        }
-
-        if (empty($error_message)) {
-            header("Location: cart.php");
-            exit;
-        }
-    }
-}
 ?>
 
-<section class="section">
-<div class="container">
+<div class="container py-5">
+
 <div class="row">
 
 <div class="col-md-6">
-    <img src="../uploads/<?= htmlspecialchars($product['image']); ?>" 
-        class="img-fluid rounded">
+
+<img
+src="../uploads/<?php echo htmlspecialchars($data['image']); ?>"
+class="img-fluid rounded"
+>
+
 </div>
+
 
 <div class="col-md-6">
-    <h2 class="fw-bold"><?= htmlspecialchars($product['nama']); ?></h2>
-    <p class="text-muted"><?= htmlspecialchars($product['deskripsi']); ?></p>
-    <h4 class="fw-bold">Rp <?= number_format($product['harga'],0,',','.'); ?></h4>
 
-    <p>Stok: 
-        <?php if ($product['stok'] > 0) { ?>
-            <span class="text-success"><?= $product['stok']; ?> tersedia</span>
-        <?php } else { ?>
-            <span class="text-danger">Habis</span>
-        <?php } ?>
-    </p>
+<h3 class="fw-bold">
+<?php echo htmlspecialchars($data['nama']); ?>
+</h3>
 
-    <?php if (!empty($error_message)) { ?>
-        <div class="alert alert-danger"><?= $error_message; ?></div>
-    <?php } ?>
+<h4 class="text-primary mt-3">
+Rp <?php echo number_format($data['harga'],0,',','.'); ?>
+</h4>
 
-    <?php if ($product['stok'] > 0) { ?>
-        <form method="POST">
-            <div class="mb-3">
-                <input type="number" 
-                        name="qty" 
-                        class="form-control" 
-                        min="1" 
-                        max="<?= $product['stok']; ?>" 
-                        required>
-            </div>
+<p class="mt-3">
+<?php echo nl2br(htmlspecialchars($data['deskripsi'])); ?>
+</p>
 
-            <button class="btn btn-primary-custom w-100">
-                Tambah ke Keranjang
-            </button>
-        </form>
-    <?php } else { ?>
-        <button class="btn btn-secondary w-100" disabled>
-            Stok Habis
-        </button>
-    <?php } ?>
+<p class="mt-2">
+
+<?php if($stok > 0){ ?>
+
+<span class="text-success">
+Stok tersedia (<?php echo $stok ?>)
+</span>
+
+<?php } else { ?>
+
+<span class="text-danger">
+Stok habis
+</span>
+
+<?php } ?>
+
+</p>
+
+
+<div class="d-flex gap-2 mt-4">
+
+<a href="checkout.php?id=<?php echo $data['id']; ?>"
+class="btn btn-primary">
+Beli Sekarang
+</a>
+
+<button
+class="btn btn-outline-dark add-cart"
+data-id="<?php echo $data['id']; ?>"
+>
+Tambah ke Keranjang
+</button>
 
 </div>
 
 </div>
+
 </div>
-</section>
+
+</div>
 
 <script>
-document.querySelector("form")?.addEventListener("submit", function(e) {
 
-    const qtyInput = document.querySelector("input[name='qty']");
-    if (!qtyInput) return;
+/* =========================
+PAGE LOADER FIX
+========================= */
 
-    const qty = parseInt(qtyInput.value);
-    const max = parseInt(qtyInput.max);
+window.addEventListener("load", function(){
 
-    if (qty > max) {
-        alert("Stok tidak mencukupi!");
-        e.preventDefault();
-    }
+const loader = document.getElementById("pageLoader");
+
+if(loader){
+loader.style.opacity = "0";
+loader.style.pointerEvents = "none";
+loader.style.transition = "opacity .4s ease";
+
+setTimeout(()=>{
+loader.style.display = "none";
+},400);
+
+}
+
 });
+
+//add to cart button
+const cartButtons = document.querySelectorAll(".add-cart");
+
+cartButtons.forEach(button => {
+
+button.addEventListener("click", function(){
+
+const id = this.getAttribute("data-id");
+
+fetch("update_cart.php", {
+
+method: "POST",
+
+headers: {
+"Content-Type": "application/x-www-form-urlencoded"
+},
+
+body: "id=" + id + "&qty=1"
+
+})
+
+.then(response => response.text())
+
+.then(data => {
+
+showCartAnimation(this);
+
+loadCartCount();
+
+})
+
+.catch(error => {
+
+console.error("Error:", error);
+
+});
+
+});
+
+});
+
+function loadCartCount(){
+
+fetch("cart_count.php")
+.then(res => res.text())
+.then(count => {
+
+const counter = document.getElementById("cart-count");
+
+if(counter){
+counter.innerText = count;
+}
+
+});
+
+}
+
+loadCartCount();
+
+function showCartAnimation(button){
+
+button.classList.add("added-animation");
+
+setTimeout(()=>{
+button.classList.remove("added-animation");
+},600);
+
+}
+
 </script>
 
-<?php include "includes/footer.php"; ?>
+<?php include "footer_shop.php"; ?>

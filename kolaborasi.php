@@ -160,36 +160,45 @@ pengabdian masyarakat dan kegiatan edukasi.
 
 
 <!-- PARTNER -->
+<?php
+$query = mysqli_query($conn,"
+SELECT * FROM partners
+WHERE status='aktif'
+ORDER BY id DESC
+");
+?>
+
 <section class="section">
 
 <div class="container">
 
 <div class="text-center mb-5">
-<h2 class="fw-bold">
-Partner & Kolaborator
-</h2>
+<h2 class="fw-bold">Partner & Kolaborator</h2>
 <p class="text-muted">
-Beberapa pihak yang telah bekerja sama dengan Rumah Pintar
+Pihak yang telah berkolaborasi dengan Rumah Pintar
 </p>
 </div>
 
-<div class="row text-center g-4">
+<div class="row g-4 text-center">
+
+<?php while($row = mysqli_fetch_assoc($query)){ ?>
 
 <div class="col-6 col-md-3">
-<img src="assets/img/partner1.png" class="img-fluid opacity-75">
+
+<?php if($row['link']){ ?>
+<a href="<?= $row['link'] ?>" target="_blank">
+<?php } ?>
+
+<img src="uploads/<?= $row['logo'] ?>"
+class="img-fluid opacity-75">
+
+<?php if($row['link']){ ?>
+</a>
+<?php } ?>
+
 </div>
 
-<div class="col-6 col-md-3">
-<img src="assets/img/partner2.png" class="img-fluid opacity-75">
-</div>
-
-<div class="col-6 col-md-3">
-<img src="assets/img/partner3.png" class="img-fluid opacity-75">
-</div>
-
-<div class="col-6 col-md-3">
-<img src="assets/img/partner4.png" class="img-fluid opacity-75">
-</div>
+<?php } ?>
 
 </div>
 
