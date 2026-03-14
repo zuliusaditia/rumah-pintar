@@ -1,39 +1,86 @@
 <?php
 require_once "session_config.php";
 include "../koneksi.php";
+include "../includes/fonnte.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
     exit;
 }
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    die("Order tidak valid.");
-}
+$id = $_GET['id'] ?? 0;
 
-$id = (int) $_GET['id'];
+/* =========================
+GET ORDER
+========================= */
 
-// ==========================
-// GET ORDER
-// ==========================
 $stmt = $conn->prepare("SELECT * FROM orders WHERE id=?");
-$stmt->bind_param("i", $id);
+$stmt->bind_param("i",$id);
 $stmt->execute();
-$order = $stmt->get_result()->fetch_assoc();
+$result = $stmt->get_result();
+$order = $result->fetch_assoc();
 $stmt->close();
 
-if (!$order) {
-    die("Order tidak ditemukan.");
+if(!$order){
+echo "<div class='container mt-5'>
+<div class='alert alert-danger'>Order tidak ditemukan</div>
+</div>";
+exit;
 }
 
-// ==========================
-// GET ITEMS
-// ==========================
-$stmt = $conn->prepare("SELECT * FROM order_items WHERE order_id=?");
-$stmt->bind_param("i", $id);
+/* =========================
+GET ORDER ITEMS
+========================= */
+
+$stmt = $conn->prepare("
+SELECT * FROM order_items
+WHERE order_id=?
+");
+
+$stmt->bind_param("i",$id);
 $stmt->execute();
 $items = $stmt->get_result();
 $stmt->close();
+
+/* =========================
+UPDATE STATUS
+========================= */
+
+if(isset($_POST['status'])){
+
+$new_status = $_POST['status'];
+
+$stmt = $conn->prepare("
+UPDATE orders
+SET status=?
+WHERE id=?
+");
+
+$stmt->bind_param("si",$new_status,$id);
+$stmt->execute();
+$stmt->close();
+
+/* =========================
+KIRIM WHATSAPP
+========================= */
+
+$message = "Halo {$order['nama']}
+
+Status pesanan Anda telah diperbarui.
+
+Kode Order:
+{$order['kode_order']}
+
+Status terbaru:
+{$new_status}
+
+Terima kasih telah berbelanja di Rumah Pintar.";
+
+kirimWA($order['no_hp'],$message);
+
+header("Location: detail_order.php?id=".$id);
+exit;
+}
 
 include "partials/header.php";
 ?>
@@ -46,103 +93,254 @@ include "partials/header.php";
 
 <h4 class="mb-4">Detail Order</h4>
 
+<div class="row">
+
+<!-- ORDER INFO -->
+
+<div class="col-lg-6">
+
 <div class="card card-modern p-4 mb-4">
 
-<h5>Kode Order: <strong><?= $order['kode_order'] ?></strong></h5>
-<p><strong>Nama:</strong> <?= htmlspecialchars($order['nama']) ?></p>
-<p><strong>No HP:</strong> <?= htmlspecialchars($order['no_hp']) ?></p>
-<p><strong>Alamat:</strong> <?= htmlspecialchars($order['alamat']) ?></p>
-<p><strong>Total:</strong> Rp <?= number_format($order['total'],0,',','.') ?></p>
-
-<?php
-$status_colors = [
-    'pending' => 'secondary',
-    'paid' => 'warning',
-    'shipped' => 'info',
-    'completed' => 'success',
-    'cancelled' => 'danger'
-];
-?>
+<h5 class="mb-3">Informasi Order</h5>
 
 <p>
-<strong>Status:</strong>
-<span class="badge bg-<?= $status_colors[$order['status']] ?? 'secondary' ?>">
-<?= ucfirst($order['status']) ?>
-</span>
+<strong>Kode Order</strong><br>
+<?= htmlspecialchars($order['kode_order']) ?>
 </p>
 
-<?php if ($order['resi']) : ?>
-<p><strong>Resi:</strong> <?= htmlspecialchars($order['resi']) ?></p>
+<p>
+<strong>Nama</strong><br>
+<?= htmlspecialchars($order['nama']) ?>
+</p>
+
+<p>
+<strong>No WhatsApp</strong><br>
+<?= htmlspecialchars($order['no_hp']) ?>
+</p>
+
+<p>
+<strong>Alamat</strong><br>
+<?= htmlspecialchars($order['alamat']) ?>
+</p>
+
+<?php if(!empty($order['patokan'])): ?>
+
+<p>
+<strong>Patokan</strong><br>
+<?= htmlspecialchars($order['patokan']) ?>
+</p>
+
 <?php endif; ?>
 
-</div>
+<p>
+<strong>Total</strong><br>
+Rp <?= number_format($order['total'],0,',','.') ?>
+</p>
 
-<div class="card card-modern p-4 mb-4">
+<p>
+<strong>Status</strong><br>
 
-<h5 class="mb-3">Item Pesanan</h5>
+<?php if($order['status']=='pending'): ?>
 
-<table class="table table-hover">
-<thead>
-<tr>
-<th>Produk</th>
-<th>Harga</th>
-<th>Qty</th>
-<th>Subtotal</th>
-</tr>
-</thead>
-<tbody>
+<span class="badge bg-warning text-dark">Pending</span>
 
-<?php while($item = $items->fetch_assoc()): ?>
-<tr>
-<td><?= htmlspecialchars($item['nama_produk']) ?></td>
-<td>Rp <?= number_format($item['harga'],0,',','.') ?></td>
-<td><?= $item['qty'] ?></td>
-<td>Rp <?= number_format($item['subtotal'],0,',','.') ?></td>
-</tr>
-<?php endwhile; ?>
+<?php elseif($order['status']=='paid'): ?>
 
-</tbody>
-</table>
+<span class="badge bg-success">Paid</span>
 
-</div>
+<?php elseif($order['status']=='shipped'): ?>
 
-<!-- UPDATE STATUS -->
-<div class="card card-modern p-4">
+<span class="badge bg-primary">Dikirim</span>
 
-<h5 class="mb-3">Update Status</h5>
+<?php else: ?>
 
-<form method="POST" action="update_order_status.php">
+<span class="badge bg-secondary">Selesai</span>
 
-<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
-<input type="hidden" name="id" value="<?= $order['id'] ?>">
+<?php endif; ?>
 
-<div class="mb-3">
-<label>Status</label>
-<select name="status" class="form-select">
-<?php foreach(['pending','paid','shipped','completed','cancelled'] as $s): ?>
-<option value="<?= $s ?>" <?= $order['status']==$s?'selected':'' ?>>
-<?= ucfirst($s) ?>
+</p>
+
+<p>
+<strong>Tanggal Order</strong><br>
+<?= date('d M Y H:i',strtotime($order['created_at'])) ?>
+</p>
+
+<hr>
+
+<h6>Update Status</h6>
+
+<form method="POST">
+
+<select name="status" class="form-select mb-2">
+
+<option value="pending" <?= $order['status']=='pending'?'selected':'' ?>>
+Pending
 </option>
-<?php endforeach; ?>
+
+<option value="paid" <?= $order['status']=='paid'?'selected':'' ?>>
+Paid
+</option>
+
+<option value="shipped" <?= $order['status']=='shipped'?'selected':'' ?>>
+Shipped
+</option>
+
+<option value="done" <?= $order['status']=='done'?'selected':'' ?>>
+Done
+</option>
+
 </select>
-</div>
 
-<div class="mb-3">
-<label>Nomor Resi (opsional)</label>
-<input type="text" name="resi" class="form-control"
-value="<?= htmlspecialchars($order['resi']) ?>">
-</div>
-
-<button class="btn btn-primary">
-<i class="bi bi-save"></i> Update Order
+<button class="btn btn-success btn-sm">
+Update Status
 </button>
 
 </form>
 
+<hr>
+
+<a
+href="https://wa.me/<?= preg_replace('/[^0-9]/','',$order['no_hp']) ?>"
+target="_blank"
+class="btn btn-success">
+
+Chat WhatsApp
+
+</a>
+
 </div>
 
 </div>
+
+
+<!-- BUKTI TRANSFER -->
+
+<div class="col-lg-6">
+
+<div class="card card-modern p-4 mb-4">
+
+<h5 class="mb-3">Bukti Transfer</h5>
+
+<?php if(!empty($order['bukti_transfer'])): ?>
+
+<img
+src="../uploads/bukti/<?= $order['bukti_transfer'] ?>"
+class="img-fluid rounded shadow-sm">
+
+<?php else: ?>
+
+<p class="text-muted">
+Belum ada bukti transfer
+</p>
+
+<?php endif; ?>
+
 </div>
+
+
+<!-- MAP -->
+
+<div class="card card-modern p-4">
+
+<h5 class="mb-3">Lokasi Pembeli</h5>
+
+<?php if(!empty($order['latitude'])): ?>
+
+<div id="map" style="height:300px;"></div>
+
+<?php else: ?>
+
+<p class="text-muted">
+Lokasi tidak tersedia
+</p>
+
+<?php endif; ?>
+
 </div>
+
+</div>
+
+</div>
+
+
+<!-- ORDER ITEMS -->
+
+<div class="card card-modern p-4 mt-4">
+
+<h5 class="mb-3">Produk Dibeli</h5>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Produk</th>
+<th width="120">Harga</th>
+<th width="80">Qty</th>
+<th width="150">Subtotal</th>
+</tr>
+
+<?php while($item = mysqli_fetch_assoc($items)): ?>
+
+<tr>
+
+<td>
+<?= htmlspecialchars($item['nama_produk']) ?>
+</td>
+
+<td>
+Rp <?= number_format($item['harga'],0,',','.') ?>
+</td>
+
+<td>
+<?= $item['qty'] ?>
+</td>
+
+<td>
+Rp <?= number_format($item['subtotal'],0,',','.') ?>
+</td>
+
+</tr>
+
+<?php endwhile; ?>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<?php if(!empty($order['latitude'])): ?>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBj118F-Di2rzDSNYEhShCa6eit4YMB3Ls"></script>
+
+<script>
+
+function initMap(){
+
+const location = {
+lat: <?= $order['latitude'] ?>,
+lng: <?= $order['longitude'] ?>
+};
+
+const map = new google.maps.Map(
+document.getElementById("map"),
+{
+zoom:15,
+center:location
+});
+
+new google.maps.Marker({
+position:location,
+map:map
+});
+
+}
+
+window.onload = initMap;
+
+</script>
+
+<?php endif; ?>
 
 <?php include "partials/footer.php"; ?>

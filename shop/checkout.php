@@ -152,6 +152,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     border-color:#2F4B8F;
 }
 
+.btn-primary-custom:hover{
+    background:#243c73;
+    border-color:#243c73;
+    color:white;
+}
+
 .copy-btn{
     border:none;
     background:#2F4B8F;
@@ -214,8 +220,12 @@ Pesanan Berhasil Dibuat
         a.n <?= htmlspecialchars($settings['account_holder']) ?>
     </p>
 <p class="mt-3">
-Setelah transfer kirim bukti pembayaran ke WhatsApp kami
+Setelah transfer kirim bukti pembayaran untuk memproses pesanan Anda.
 </p>
+
+<a href="upload_bukti.php?order=<?= urlencode($kode_order) ?>" class="btn btn-primary-custom mt-3">
+Upload Bukti Transfer
+</a>
 
 <a href="index.php" class="btn btn-primary-custom mt-3">
 Kembali ke Toko

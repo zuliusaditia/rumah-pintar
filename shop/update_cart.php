@@ -17,5 +17,3 @@ $_SESSION['cart'][$id] += $qty;
 $_SESSION['cart'][$id] = $qty;
 
 }
-
-echo "ok";

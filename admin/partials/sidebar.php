@@ -16,6 +16,10 @@ $pending_volunteer = mysqli_fetch_assoc(
     <i class="bi bi-speedometer2"></i> Dashboard
 </a>
 
+<a href="chat_dashboard.php" class="<?= $current=='chat_dashboard.php'?'active':'' ?>">
+    <i class="bi bi-chat-dots"></i> Kirim Chat
+</a>
+
 <a href="list_artikel.php" class="<?= $current=='list_artikel.php'?'active':'' ?>">
     <i class="bi bi-file-earmark-text"></i> Artikel
 </a>
