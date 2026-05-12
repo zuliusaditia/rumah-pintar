@@ -1,6 +1,6 @@
 <?php
 
-include "../koneksi.php";
+require_once __DIR__ . "/../koneksi.php";
 
 $settings = mysqli_fetch_assoc(
     mysqli_query($conn, "SELECT bank_name, rekening, account_holder FROM settings LIMIT 1")

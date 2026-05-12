@@ -2,7 +2,7 @@
 ob_start();
 
 require_once "session_config.php";
-include "../koneksi.php";
+require_once __DIR__ . "/../koneksi.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
@@ -121,12 +121,12 @@ $settings = mysqli_fetch_assoc(
     mysqli_query($conn, "SELECT * FROM settings LIMIT 1")
 );
 
-include "partials/header.php";
+require_once __DIR__ . "/partials/header.php";
 ?>
 
 <div class="container-fluid">
 
-<?php include "partials/sidebar.php"; ?>
+<?php require_once __DIR__ . "/partials/sidebar.php"; ?>
 
 <div class="content-area p-4">
 
@@ -313,4 +313,4 @@ button.innerHTML = "Simpan Settings";
 
 </script>
 
-<?php include "partials/footer.php"; ?>
+<?php require_once __DIR__ . "/partials/footer.php"; ?>

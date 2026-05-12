@@ -3,8 +3,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 
-include "../koneksi.php";
-include "../includes/whatsapp.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/../includes/whatsapp.php";
 
 /* =========================
 AMBIL DATA FORM

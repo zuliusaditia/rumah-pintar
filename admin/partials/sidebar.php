@@ -1,4 +1,10 @@
 <?php
+// Ensure $conn is defined before use
+$conn = $conn ?? null;
+if (!isset($conn)) {
+    require_once __DIR__ . "/../../koneksi.php";
+}
+
 $current = basename($_SERVER['PHP_SELF']);
 
 $pending_volunteer = mysqli_fetch_assoc(

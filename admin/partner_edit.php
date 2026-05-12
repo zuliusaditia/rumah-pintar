@@ -1,6 +1,6 @@
 <?php
-include "../koneksi.php";
-include "partials/header.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/partials/header.php";
 
 $id = $_GET['id'];
 
@@ -10,7 +10,7 @@ $data = mysqli_fetch_assoc($query);
 
 <div class="container-fluid">
 
-<?php include "partials/sidebar.php"; ?>
+<?php require_once __DIR__ . "/partials/sidebar.php"; ?>
 
 <div class="content-area p-4">
 
@@ -114,4 +114,4 @@ window.location='partners.php';
 }
 ?>
 
-<?php include "partials/footer.php"; ?>
+<?php require_once __DIR__ . "/partials/footer.php"; ?>

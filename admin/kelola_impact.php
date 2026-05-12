@@ -1,6 +1,6 @@
 <?php
-require_once "session_config.php";
-include "../koneksi.php";
+require_once __DIR__ . "/../admin/session_config.php";
+require_once __DIR__ . "/../koneksi.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin'])) {
 
 $result = mysqli_query($conn,"SELECT * FROM impact_stats ORDER BY id DESC");
 
-include "partials/header.php";
+require_once __DIR__ . "/partials/header.php";
 ?>
 
 <div class="container-fluid">
@@ -65,4 +65,4 @@ include "partials/header.php";
 
 </table>
 
-<?php $stmt->close(); ?>
+<?php $result->close(); ?>

@@ -1,6 +1,6 @@
 <?php
-require_once "session_config.php";
-include "../koneksi.php";
+require_once __DIR__ . "/../admin/session_config.php";
+require_once __DIR__ . "/../koneksi.php";
 
 if($_SERVER['REQUEST_METHOD']=='POST'){
 

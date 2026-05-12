@@ -1,7 +1,7 @@
 <?php
 session_start();
-include "../koneksi.php";
-include "header_shop.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/header_shop.php";
 
 $order_code = $_GET['order'] ?? '';
 
@@ -98,4 +98,4 @@ Upload Bukti
 
 </div>
 
-<?php include "footer_shop.php"; ?>
+<?php require_once __DIR__ . "/footer_shop.php"; ?>

@@ -4,6 +4,11 @@ EDIT 1
 HAPUS LIMIT 1 supaya semua slide diambil
 =============================== */
 
+global $conn;
+if (!isset($conn) || !$conn) {
+    die('Database connection not established.');
+}
+
 $hero_query = mysqli_query($conn,"
 SELECT * FROM hero_slides
 WHERE status='aktif'

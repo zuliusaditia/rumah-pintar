@@ -1,6 +1,6 @@
 <?php
-include "../koneksi.php";
-include "../includes/whatsapp.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/../includes/whatsapp.php";
 
 $id = $_GET['id'];
 

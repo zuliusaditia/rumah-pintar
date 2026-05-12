@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 
 session_start();
 
-include "../koneksi.php";   // koneksi dulu
-include "header_shop.php";
+require_once __DIR__ . "/../koneksi.php";   // koneksi dulu
+require_once __DIR__ . "/header_shop.php";
 
 /* =========================
 GET SETTINGS

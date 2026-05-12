@@ -1,7 +1,7 @@
 <?php
 session_start();
-include "../koneksi.php";
-include "header_shop.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/header_shop.php";
 
 $cart = $_SESSION['cart'] ?? [];
 

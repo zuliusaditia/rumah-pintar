@@ -1,6 +1,6 @@
 <?php
-include "../koneksi.php";
-include "header_shop.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/header_shop.php";
 
 $query = "SELECT * FROM products WHERE status='aktif' ORDER BY id DESC";
 $result = mysqli_query($conn, $query);

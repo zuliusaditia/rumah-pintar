@@ -82,12 +82,6 @@ Shop Rumah Pintar
     <span id="cart-count">0</span>
 </a>
 
-<a href="../index.php" class="btn btn-outline-secondary">
-
-Kembali ke Website
-
-</a>
-
 </div>
 
 </div>

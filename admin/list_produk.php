@@ -1,6 +1,6 @@
 <?php
-require_once "session_config.php";
-include "../koneksi.php";
+require_once __DIR__ . "/../admin/session_config.php";
+require_once __DIR__ . "/../koneksi.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");
@@ -32,12 +32,12 @@ $total_pages = ceil($total_data / $limit);
 
 $query = mysqli_query($conn,"SELECT * FROM products $where ORDER BY id DESC LIMIT $start,$limit");
 
-include "partials/header.php";
+require_once __DIR__ . "/partials/header.php";
 ?>
 
 <div class="container-fluid">
 
-<?php include "partials/sidebar.php"; ?>
+<?php require_once __DIR__ . "/partials/sidebar.php"; ?>
 
 <div class="content-area">
 

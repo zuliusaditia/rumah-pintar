@@ -2,8 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once "session_config.php";
-include "../koneksi.php";
+require_once __DIR__ . "/../admin/session_config.php";
+require_once __DIR__ . "/../koneksi.php";
 
 if (isset($_SESSION['admin'])) {
     header("Location: dashboard.php");

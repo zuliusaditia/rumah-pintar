@@ -1,7 +1,7 @@
 <?php
 require_once "session_config.php";
-include "../koneksi.php";
-include "../includes/fonnte.php";
+require_once __DIR__ . "/../koneksi.php";
+require_once __DIR__ . "/../includes/fonnte.php";
 
 if (!isset($_SESSION['admin'])) {
     header("Location: login.php");

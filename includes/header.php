@@ -87,8 +87,8 @@ if ($settings && $settings['maintenance_mode'] == 1) {
                 </li>
 
                 <li class="nav-item ms-lg-3">
-                    <a class="btn btn-primary-custom" href="donasi.php">
-                        Donasi Sekarang
+                    <a class="btn btn-primary-custom" href="shop/index.php">
+                        Toko Donasi
                     </a>
                 </li>
 
