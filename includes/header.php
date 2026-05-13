@@ -45,6 +45,7 @@ if ($settings && $settings['maintenance_mode'] == 1) {
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
+
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm navbar-custom">

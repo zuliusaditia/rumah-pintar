@@ -79,9 +79,115 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="number" name="umur" class="form-control" required>
     </div>
 
+    <!-- // =========================
+    // PEKERJAAN / STATUS
+    // ========================= -->
+
     <div class="mb-3">
         <label class="form-label">Pekerjaan / Status</label>
         <input type="text" name="pekerjaan" class="form-control">
+    </div>
+
+    <!-- // =========================
+    // HARI TERSEDIA
+    // ========================= -->
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Hari Tersedia Menjadi Relawan</label>
+
+        <div class="volunteer-days">
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Senin">
+                <span>Senin</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Selasa">
+                <span>Selasa</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Rabu">
+                <span>Rabu</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Kamis">
+                <span>Kamis</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Jumat">
+                <span>Jumat</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Sabtu">
+                <span>Sabtu</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="hari_tersedia[]" value="Minggu">
+                <span>Minggu</span>
+            </label>
+
+        </div>
+    </div>
+
+
+    <!-- =========================
+    JAM TERSEDIA
+    ========================= -->
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Waktu Tersedia</label>
+
+        <select name="waktu_tersedia" class="form-control" required>
+            <option value="">Pilih waktu tersedia</option>
+            <option value="Pagi (08:00 - 12:00)">Pagi (08:00 - 12:00)</option>
+            <option value="Siang (12:00 - 15:00)">Siang (12:00 - 15:00)</option>
+            <option value="Sore (15:00 - 18:00)">Sore (15:00 - 18:00)</option>
+            <option value="Flexible">Flexible</option>
+        </select>
+    </div>
+
+
+    <!-- =========================
+    BIDANG RELAWAN
+    ========================= -->
+
+    <div class="mb-4">
+        <label class="form-label fw-semibold">Bidang yang Diminati</label>
+
+        <div class="volunteer-days">
+
+            <label class="day-option">
+                <input type="checkbox" name="bidang[]" value="Mengajar">
+                <span>Mengajar</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="bidang[]" value="Event">
+                <span>Event</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="bidang[]" value="Donasi Barang">
+                <span>Donasi Barang</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="bidang[]" value="Dokumentasi">
+                <span>Dokumentasi</span>
+            </label>
+
+            <label class="day-option">
+                <input type="checkbox" name="bidang[]" value="Desain / Media">
+                <span>Desain / Media</span>
+            </label>
+
+        </div>
     </div>
 
     <div class="mb-3">

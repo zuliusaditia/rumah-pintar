@@ -183,7 +183,7 @@ Pelajari Lebih Lanjut
 
 <br>
 <!-- PRODUCT -->
-<section class="section">
+<!-- <section class="section">
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -226,7 +226,7 @@ Pelajari Lebih Lanjut
         </div>
 
     </div>
-</section>
+</section> -->
 
 <!-- KEGIATAN TERBARU -->
 <section class="section">
